@@ -1,4 +1,4 @@
-import sys, re, csv
+import sys, csv
 from subprocess import *
 
 kernel_number = (1, 2, 3 ,4, 5, 6, 7, 8, 9)
@@ -15,7 +15,7 @@ for i in kernel_number:
 
     print("Ejecutando version {0}...".format(i))
     texto=Popen("sudo perf stat  -e instructions:u,branch-misses:u,branches:u ./branch{0}".format(i), shell=True,stderr=PIPE,stdout=PIPE).communicate()[1].split("\n")
-    tabla.append(["branch{0}".format(i),re.search("(?<= )\S+(?= )",texto[4]).group(0),re.search("(?<= )\S+(?= )",texto[5]).group(0)])
+    tabla.append(["branch{0}".format(i),texto[4].split()[0],texto[5].split()[0]])
 
 print("Generando fichero...")
 with open("bifurcaciones.csv","wb") as f:
